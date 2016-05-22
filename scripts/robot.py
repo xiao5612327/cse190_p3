@@ -29,7 +29,10 @@ class Robot ():
 		# publish A* path
 		self.path_array = []
 		self.publish_astar()
-		#self.mdp()
+
+		# publish MDP
+		self.mdp = MDP()
+		self.mdp.make_policy()
 
 		rospy.sleep(1)
 		self.sim_complete_pub.publish(True)
@@ -38,12 +41,14 @@ class Robot ():
 
 
 	def publish_astar(self):
-		# astar should return []
 		obj = Astar()
 		obj.astar_func(self.path_array)
 		for i in range (len(self.path_array)):
 			rospy.sleep(1)
-			self.astar_pub.publish(self.path_array[i])
+			msg = AStarPath()
+			msg.data = self.path_array[i]
+			self.astar_pub.publish(msg)
+			#self.astar_pub.publish(self.path_array[i])
 
 
 if __name__ == '__main__':

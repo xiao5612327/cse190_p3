@@ -17,7 +17,7 @@ class Astar():
 	self.start = self.config['start']
 	self.goal = self.config['goal']
 	self.walls = self.config['walls']
-	self.move_list = self.config['pits']
+	self.pits = self.config['pits']
 	self.map_size = self.config['map_size']
 	self.row = self.map_size[0]	
 	self.col = self.map_size[1]	
@@ -32,6 +32,7 @@ class Astar():
 	heapq.heapify(self.open_list)
 	self.closed_list = set()
 	#self.path_array = []
+
 
     def heuristics (self):
 	for i in range (self.row):
@@ -50,7 +51,6 @@ class Astar():
 		self.closed_list.add ( (current_x, current_y) )
 		if ( current_x == self.goal[0] and current_y == self.goal[1] ):
 			self.create_path(result_array)
-			print "create_path"
 			return
 		neighbors_array = self.getNeighbors(current_x, current_y)
 		for i in range (len(neighbors_array)):
@@ -82,16 +82,19 @@ class Astar():
 
     def getNeighbors(self, x, y):
 	neighbors = []		
-	if ( y - 1 >= 0 and [x,y-1] not in self.walls ):
+	if ( [0,-1] in self.move_list and  y - 1 >= 0 and [x,y-1] not in self.walls and [x,y-1] not in self.pits ):
 		neighbors.append( (x, y-1) )	
 		self.uniform_grid[x][y-1] = self.uniform_grid[x][y]+1
-	if ( y + 1 < self.col and [x,y+1] not in self.walls ):
+
+	if ( [0,1] in self.move_list and y + 1 < self.col and [x,y+1] not in self.walls and [x,y+1] not in self.pits ):
 		neighbors.append( (x, y+1) )	
 		self.uniform_grid[x][y+1] = self.uniform_grid[x][y]+1
-	if ( x - 1 >= 0 and [x-1,y] not in self.walls ):
+
+	if ( [-1,0] in self.move_list and x - 1 >= 0 and [x-1,y] not in self.walls and [x-1,y] not in self.pits):
 		neighbors.append( (x-1, y) )	
 		self.uniform_grid[x-1][y] = self.uniform_grid[x][y]+1
-	if ( x + 1 < self.row and [x+1,y] not in self.walls ) :
+
+	if ( [1,0] in self.move_list and x + 1 < self.row and [x+1,y] not in self.walls and [x+1,y] not in self.pits ) :
 		neighbors.append( (x+1, y) )	
 		self.uniform_grid[x+1][y] = self.uniform_grid[x][y]+1
 		
