@@ -6,6 +6,7 @@ import math
 import numpy as np
 from std_msgs.msg import String, Float32, Bool
 from read_config import read_config
+from cse_190_assi_3.msg import *
 from astar import *
 from mdp import *
 
@@ -26,8 +27,9 @@ class Robot ():
 		)
 
 		# publish A* path
+		self.path_array = []
 		self.publish_astar()
-		mdp()
+		#self.mdp()
 
 		rospy.sleep(1)
 		self.sim_complete_pub.publish(True)
@@ -37,9 +39,11 @@ class Robot ():
 
 	def publish_astar(self):
 		# astar should return []
-		path_array = astar()
-		for i in range (len(path_array)):
-			self.astar.publish(path_array[i])
+		obj = Astar()
+		obj.astar_func(self.path_array)
+		for i in range (len(self.path_array)):
+			rospy.sleep(1)
+			self.astar_pub.publish(self.path_array[i])
 
 
 if __name__ == '__main__':

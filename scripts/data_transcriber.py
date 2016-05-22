@@ -60,9 +60,9 @@ class RobotLogger():
             with open('path_list.json', 'w') as path:
                 #Saving the entire path to be confirmed
                 json.dump(self.path_list, path)
-            with open('policy_list.json', 'w') as policy:
+            #with open('policy_list.json', 'w') as policy:
                 #Saving only the last policy to be compared
-                json.dump(self.policy_list[-1], policy)
+                #json.dump(self.policy_list[-1], policy)
 
 if __name__ == '__main__':
     rl = RobotLogger()
