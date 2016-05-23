@@ -7,8 +7,8 @@ import numpy as np
 from std_msgs.msg import String, Float32, Bool
 from read_config import read_config
 from cse_190_assi_3.msg import *
-from astar import *
-from mdp import *
+from astar import Astar
+from mdp import MDP
 
 class Robot ():
 	def __init__(self):
@@ -31,6 +31,7 @@ class Robot ():
 		self.publish_astar()
 
 		# publish MDP
+		print "running mdp"
 		self.mdp = MDP()
 		self.mdp.make_policy()
 
